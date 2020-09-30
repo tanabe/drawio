@@ -2542,6 +2542,11 @@ EditorUi.prototype.initCanvas = function()
 				graph.container.offsetLeft + graph.container.clientWidth / 2,
 				graph.container.offsetTop + graph.container.clientHeight / 2);
 		}
+
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+		if (isChrome) {
+			this.zoomFactor = 1.05;
+		}
 		
 		// Switches to 5% zoom steps below 15%
 		if (zoomIn)
@@ -2575,6 +2580,7 @@ EditorUi.prototype.initCanvas = function()
 
 		this.cumulativeZoomFactor = Math.max(0.05, Math.min(this.view.scale * this.cumulativeZoomFactor, 160)) / this.view.scale;
 
+		console.log(this.cumulativeZoomFactor);
 		if (graph.isFastZoomEnabled())
 		{
 			if (filter == null && mainGroup.getAttribute('filter') != '')
