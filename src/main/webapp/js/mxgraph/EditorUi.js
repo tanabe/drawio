@@ -2543,11 +2543,6 @@ EditorUi.prototype.initCanvas = function()
 				graph.container.offsetTop + graph.container.clientHeight / 2);
 		}
 
-		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-		if (isChrome) {
-			this.zoomFactor = 1.05;
-		}
-		
 		// Switches to 5% zoom steps below 15%
 		if (zoomIn)
 		{
@@ -2560,6 +2555,10 @@ EditorUi.prototype.initCanvas = function()
 				// Uses to 5% zoom steps for better grid rendering in webkit
 				// and to avoid rounding errors for zoom steps
 				this.cumulativeZoomFactor *= this.zoomFactor;
+
+				// tanabe test normalize zoom factor for MacOS pinch-zoom
+				this.cumulativeZoomFactor = 1 + this.cumulativeZoomFactor * 0.5;
+
 				this.cumulativeZoomFactor = Math.round(this.view.scale * this.cumulativeZoomFactor * 20) / 20 / this.view.scale;
 			}
 		}
@@ -2574,6 +2573,7 @@ EditorUi.prototype.initCanvas = function()
 				// Uses to 5% zoom steps for better grid rendering in webkit
 				// and to avoid rounding errors for zoom steps
 				this.cumulativeZoomFactor /= this.zoomFactor;
+				console.log("scale is " + this.view.scale);
 				this.cumulativeZoomFactor = Math.round(this.view.scale * this.cumulativeZoomFactor * 20) / 20 / this.view.scale;
 			}
 		}
